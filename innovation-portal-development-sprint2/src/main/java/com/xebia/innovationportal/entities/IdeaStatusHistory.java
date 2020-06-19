@@ -16,69 +16,69 @@ import javax.persistence.Table;
 @Table(name = "IdeaStatusHistories")
 public class IdeaStatusHistory {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@OneToOne
-	@JoinColumn(name = "STATUS_ID")
-	private IdeaStatus ideaStatus;
+    @OneToOne
+    @JoinColumn(name = "STATUS_ID")
+    private IdeaStatus ideaStatus;
 
-	@ManyToOne
-	@JoinColumn(name = "IDEA_ID")
-	private Idea idea;
+    @ManyToOne
+    @JoinColumn(name = "IDEA_ID")
+    private Idea idea;
 
-	@Column(name = "COMMENTS")
-	private String comment;
+    @Column(name = "COMMENTS")
+    private String comment;
 
-	@OneToOne
-	@JoinColumn(name = "USER_ID")
-	private User user;
+    @OneToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
-	public User getUser() {
-		return user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public LocalDateTime getModificationTime() {
-		return modificationTime;
-	}
+    public LocalDateTime getModificationTime() {
+        return modificationTime;
+    }
 
-	public void setModificationTime(LocalDateTime modificationTime) {
-		this.modificationTime = modificationTime;
-	}
+    public void setModificationTime(LocalDateTime modificationTime) {
+        this.modificationTime = modificationTime;
+    }
 
-	private LocalDateTime modificationTime;
+    private LocalDateTime modificationTime;
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public IdeaStatus getIdeaStatus() {
-		return ideaStatus;
-	}
+    public IdeaStatus getIdeaStatus() {
+        return ideaStatus;
+    }
 
-	public void setIdeaStatus(IdeaStatus ideaStatus) {
-		this.ideaStatus = ideaStatus;
-	}
+    public void setIdeaStatus(IdeaStatus ideaStatus) {
+        this.ideaStatus = ideaStatus;
+    }
 
-	public Idea getIdea() {
-		return idea;
-	}
+    public Idea getIdea() {
+        return idea;
+    }
 
-	public void setIdea(Idea idea) {
-		this.idea = idea;
-	}
+    public void setIdea(Idea idea) {
+        this.idea = idea;
+    }
 
-	public String getComment() {
-		return comment;
-	}
+    public String getComment() {
+        return comment;
+    }
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
 }

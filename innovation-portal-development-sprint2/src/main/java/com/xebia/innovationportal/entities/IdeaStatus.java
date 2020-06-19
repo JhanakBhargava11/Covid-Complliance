@@ -11,39 +11,40 @@ import javax.persistence.Table;
 @Table(name = "IDEA_STATUS")
 public class IdeaStatus {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Column(nullable = false)
-	private String status;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	private String statusDescription;
+    @Column(nullable = false)
+    private String status;
 
-	public Integer getId() {
-		return id;
-	}
+    private String statusDescription;
 
-	public String getStatus() {
-		return status;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public String getStatusDescription() {
-		return statusDescription;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public void setStatusDescription(String statusDescription) {
-		this.statusDescription = statusDescription;
-	}
-	public IdeaStatus() {
-	}
+    public String getStatusDescription() {
+        return statusDescription;
+    }
 
-	public IdeaStatus(String status, String statusDescription) {
-		this.status = status;
-		this.statusDescription = statusDescription;
-	}
+    public void setStatusDescription(String statusDescription) {
+        this.statusDescription = statusDescription;
+    }
+
+    public IdeaStatus() {
+    }
+
+    public IdeaStatus(String status, String statusDescription) {
+        this.status = status;
+        this.statusDescription = statusDescription;
+    }
 }

@@ -15,22 +15,22 @@ import com.xebia.innovationportal.models.ZohoUserData;
 
 public interface UserService extends UserDetailsService {
 
-	Optional<User> findUserByEmail(final String email);
+    Optional<User> findUserByEmail(final String email);
 
-	default User transform(CreateUserRequest request) {
-		return new User.Builder(request.getEmail()).location(request.getCountry()).displayName(request.getDisplayName())
-				.name(request.getName()).timezone(request.getTimezone()).employeeCode(request.getEmployeeCode())
-				.enabled(false).build();
-	}
+    default User transform(CreateUserRequest request) {
+        return new User.Builder(request.getEmail()).location(request.getCountry()).displayName(request.getDisplayName())
+                .name(request.getName()).timezone(request.getTimezone()).employeeCode(request.getEmployeeCode())
+                .enabled(false).build();
+    }
 
-	@Transactional
-	default User save(User user) {
-		return save(user, Collections.singleton(Role.ROLE_USER));
-	}
+    @Transactional
+    default User save(User user) {
+        return save(user, Collections.singleton(Role.ROLE_USER));
+    }
 
-	User save(User user, Set<Role> roles);
+    User save(User user, Set<Role> roles);
 
-	ZohoUserData getZohoUserData(final CreateUserRequest createUserRequest);
+    ZohoUserData getZohoUserData(final CreateUserRequest createUserRequest);
 
-	ZohoUserData setStaffDataToZohoUserdata(final StaffMetaData staffMetaData);
+    ZohoUserData setStaffDataToZohoUserdata(final StaffMetaData staffMetaData);
 }

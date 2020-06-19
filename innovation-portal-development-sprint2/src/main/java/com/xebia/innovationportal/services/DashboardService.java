@@ -8,9 +8,9 @@ import com.xebia.innovationportal.models.IdeaStatsResponse;
 import com.xebia.innovationportal.models.TopContributorResponse;
 
 public interface DashboardService {
-     List<TopContributorResponse> getTopContributor();
+    List<TopContributorResponse> getTopContributor();
 
-     List<Idea> getTrendingIdeas();
-     
-     HashSet<IdeaStatsResponse> getAllIdeaStats(String duration);
+    List<Idea> getTrendingIdeas();
+
+    HashSet<IdeaStatsResponse> getAllIdeaStats(String duration);
 }

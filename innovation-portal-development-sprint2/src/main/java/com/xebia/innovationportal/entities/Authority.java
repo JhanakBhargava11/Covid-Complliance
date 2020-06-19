@@ -16,36 +16,36 @@ import com.xebia.innovationportal.enums.Role;
 @Entity
 @Table(name = "authority")
 public class Authority implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Enumerated(EnumType.STRING)
-	@Column
-	private Role role;
+    @Enumerated(EnumType.STRING)
+    @Column
+    private Role role;
 
-	public Authority() {
-	}
+    public Authority() {
+    }
 
-	public Authority(Role role) {
-		this.role = role;
-	}
+    public Authority(Role role) {
+        this.role = role;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Role getRole() {
-		return role;
-	}
+    public Role getRole() {
+        return role;
+    }
 
-	public void setRole(Role role) {
-		this.role = role;
-	}
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

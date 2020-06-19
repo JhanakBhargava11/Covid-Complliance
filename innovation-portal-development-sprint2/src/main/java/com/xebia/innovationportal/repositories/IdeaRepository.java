@@ -17,17 +17,17 @@ import com.xebia.innovationportal.entities.User;
 @Transactional
 public interface IdeaRepository extends JpaRepository<Idea, Integer> {
 
-	@Query(value = "select * from ideas where ideas.status_id in (select id from idea_status where idea_status.status in ('"
-			+ CommonConstants.STATUS_APPROVED + "','" + CommonConstants.STATUS_DEVELOPMENT
-			+ "')) order by ideas.like_count desc limit 5", nativeQuery = true)
-	public List<Idea> findIdeaByLikesCount();
+    @Query(value = "select * from ideas where ideas.status_id in (select id from idea_status where idea_status.status in ('"
+            + CommonConstants.STATUS_APPROVED + "','" + CommonConstants.STATUS_DEVELOPMENT
+            + "')) order by ideas.like_count desc limit 5", nativeQuery = true)
+    public List<Idea> findIdeaByLikesCount();
 
-	public List<Idea> findByIdeaStatusIdNotIn(Collection<Integer> ideaStatus);
+    public List<Idea> findByIdeaStatusIdNotIn(Collection<Integer> ideaStatus);
 
-	public List<Idea> findByUser(User user);
+    public List<Idea> findByUser(User user);
 
-	public List<Idea> findByIdeaStatusOrderBySubmissionDateDesc(IdeaStatus ideaStatus);
+    public List<Idea> findByIdeaStatusOrderBySubmissionDateDesc(IdeaStatus ideaStatus);
 
-	public List<Idea> findByIdeaStatusIdNotInOrderBySubmissionDateDesc(Collection<Integer> ideaStatus);
+    public List<Idea> findByIdeaStatusIdNotInOrderBySubmissionDateDesc(Collection<Integer> ideaStatus);
 
 }

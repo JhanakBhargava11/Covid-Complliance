@@ -19,38 +19,38 @@ import com.xebia.innovationportal.services.CategoryService;
 @Transactional
 public class CategoryServiceImpl implements CategoryService {
 
-	@Autowired
-	private SubCategoryRepository subCategoryRepository;
+    @Autowired
+    private SubCategoryRepository subCategoryRepository;
 
-	@Autowired
-	private CategoryRepository respository;
+    @Autowired
+    private CategoryRepository respository;
 
-	@Override
-	public List<SubCategoryResponse> getSubCategories() {
+    @Override
+    public List<SubCategoryResponse> getSubCategories() {
 
-		List<SubCategory> dbList = subCategoryRepository.findAll();
-		List<SubCategoryResponse> subCategoryResponseList = new ArrayList<SubCategoryResponse>();
-		for (SubCategory subCategory : dbList) {
-			SubCategoryResponse subCategoryResponse = new SubCategoryResponse();
-			subCategoryResponse.setId(subCategory.getId());
-			subCategoryResponse.setCategoryName(subCategory.getSubCategoryName());
-			subCategoryResponse.setCategoryId(subCategory.getCategory().getId());
-			// subCategoryResponse.setActive(isActive);
-			subCategoryResponse.setSubCategoryName(subCategory.getCategory().getCategoryName());
+        List<SubCategory> dbList = subCategoryRepository.findAll();
+        List<SubCategoryResponse> subCategoryResponseList = new ArrayList<SubCategoryResponse>();
+        for (SubCategory subCategory : dbList) {
+            SubCategoryResponse subCategoryResponse = new SubCategoryResponse();
+            subCategoryResponse.setId(subCategory.getId());
+            subCategoryResponse.setCategoryName(subCategory.getSubCategoryName());
+            subCategoryResponse.setCategoryId(subCategory.getCategory().getId());
+            // subCategoryResponse.setActive(isActive);
+            subCategoryResponse.setSubCategoryName(subCategory.getCategory().getCategoryName());
 
-			subCategoryResponseList.add(subCategoryResponse);
+            subCategoryResponseList.add(subCategoryResponse);
 
-		}
+        }
 
-		return subCategoryResponseList;
-	}
+        return subCategoryResponseList;
+    }
 
-	public SubCategory saveCategory(SubCategoryResponse response) {
-		SubCategory subCategory = new SubCategory();
-		Category category = respository.getOne(response.getCategoryId());
-		subCategory.setCategory(category);
-		subCategory.setSubCategoryName(response.getCategoryName());
-		return subCategoryRepository.save(subCategory);
-	}
+    public SubCategory saveCategory(SubCategoryResponse response) {
+        SubCategory subCategory = new SubCategory();
+        Category category = respository.getOne(response.getCategoryId());
+        subCategory.setCategory(category);
+        subCategory.setSubCategoryName(response.getCategoryName());
+        return subCategoryRepository.save(subCategory);
+    }
 
 }

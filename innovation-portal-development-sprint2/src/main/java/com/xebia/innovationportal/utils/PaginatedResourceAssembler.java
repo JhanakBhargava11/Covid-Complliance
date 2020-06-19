@@ -22,78 +22,78 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component("pageAssembler")
 public class PaginatedResourceAssembler<T> {
 
-	private final HateoasPageableHandlerMethodArgumentResolver pageableResolver;
+    private final HateoasPageableHandlerMethodArgumentResolver pageableResolver;
 
-	private boolean forceFirstAndLastRels = false;
+    private boolean forceFirstAndLastRels = false;
 
-	public PaginatedResourceAssembler(@Nullable HateoasPageableHandlerMethodArgumentResolver resolver) {
-		this.pageableResolver = resolver == null ? new HateoasPageableHandlerMethodArgumentResolver() : resolver;
-	}
+    public PaginatedResourceAssembler(@Nullable HateoasPageableHandlerMethodArgumentResolver resolver) {
+        this.pageableResolver = resolver == null ? new HateoasPageableHandlerMethodArgumentResolver() : resolver;
+    }
 
-	public void setForceFirstAndLastRels(boolean forceFirstAndLastRels) {
-		this.forceFirstAndLastRels = forceFirstAndLastRels;
-	}
+    public void setForceFirstAndLastRels(boolean forceFirstAndLastRels) {
+        this.forceFirstAndLastRels = forceFirstAndLastRels;
+    }
 
-	public PaginatedResource<T> assemble(final List<T> content, final Pageable pageable, final long totalRecords) {
-		return assemble(new PageImpl<T>(content, pageable, totalRecords));
-	}
+    public PaginatedResource<T> assemble(final List<T> content, final Pageable pageable, final long totalRecords) {
+        return assemble(new PageImpl<T>(content, pageable, totalRecords));
+    }
 
-	public PaginatedResource<T> assemble(final Page<T> page) {
+    public PaginatedResource<T> assemble(final Page<T> page) {
 
-		Assert.notNull(page, "Page must not be null!");
-		Assert.notNull(page.getContent(), "Page Content must not be null!");
-		Assert.notNull(page.getPageable(), "Pageable must not be null!");
+        Assert.notNull(page, "Page must not be null!");
+        Assert.notNull(page.getContent(), "Page Content must not be null!");
+        Assert.notNull(page.getPageable(), "Pageable must not be null!");
 
-		PaginatedResource<T> paginatedResource = new PaginatedResource<>(page);
-		addPaginationLinks(paginatedResource, page);
-		return paginatedResource;
-	}
+        PaginatedResource<T> paginatedResource = new PaginatedResource<>(page);
+        addPaginationLinks(paginatedResource, page);
+        return paginatedResource;
+    }
 
-	private void addPaginationLinks(final PaginatedResource<T> paginatedResource, final Page<T> page) {
+    private void addPaginationLinks(final PaginatedResource<T> paginatedResource, final Page<T> page) {
 
-		UriTemplate base = getUriTemplate();
+        UriTemplate base = getUriTemplate();
 
-		boolean isNavigable = page.hasPrevious() || page.hasNext();
+        boolean isNavigable = page.hasPrevious() || page.hasNext();
 
-		Link selfLink = createLink(base, page.getPageable(), IanaLinkRelations.SELF);
+        Link selfLink = createLink(base, page.getPageable(), IanaLinkRelations.SELF);
 
-		paginatedResource.getMetadata().add(selfLink);
+        paginatedResource.getMetadata().add(selfLink);
 
-		if (page.hasPrevious()) {
-			paginatedResource.getMetadata().add(createLink(base, page.previousPageable(), IanaLinkRelations.PREV));
-		}
+        if (page.hasPrevious()) {
+            paginatedResource.getMetadata().add(createLink(base, page.previousPageable(), IanaLinkRelations.PREV));
+        }
 
-		if (page.hasNext()) {
-			paginatedResource.getMetadata().add(createLink(base, page.nextPageable(), IanaLinkRelations.NEXT));
-		}
+        if (page.hasNext()) {
+            paginatedResource.getMetadata().add(createLink(base, page.nextPageable(), IanaLinkRelations.NEXT));
+        }
 
-		if (isNavigable || forceFirstAndLastRels) {
-			paginatedResource.getMetadata()
-					.add(createLink(base, PageRequest.of(0, page.getSize(), page.getSort()), IanaLinkRelations.FIRST));
-		}
+        if (isNavigable || forceFirstAndLastRels) {
+            paginatedResource.getMetadata()
+                    .add(createLink(base, PageRequest.of(0, page.getSize(), page.getSort()), IanaLinkRelations.FIRST));
+        }
 
-		if (isNavigable || forceFirstAndLastRels) {
+        if (isNavigable || forceFirstAndLastRels) {
 
-			int lastIndex = page.getTotalPages() == 0 ? 0 : page.getTotalPages() - 1;
+            int lastIndex = page.getTotalPages() == 0 ? 0 : page.getTotalPages() - 1;
 
-			paginatedResource.getMetadata().add(createLink(base,
-					PageRequest.of(lastIndex, page.getSize(), page.getSort()), IanaLinkRelations.LAST));
-		}
-	}
+            paginatedResource.getMetadata().add(createLink(base,
+                    PageRequest.of(lastIndex, page.getSize(), page.getSort()), IanaLinkRelations.LAST));
+        }
+    }
 
-	private Link createLink(UriTemplate base, Pageable pageable, LinkRelation relation) {
+    private Link createLink(UriTemplate base, Pageable pageable, LinkRelation relation) {
 
-		UriComponentsBuilder builder = fromUri(base.expand());
-		this.pageableResolver.enhance(builder, null, pageable);
+        UriComponentsBuilder builder = fromUri(base.expand());
+        this.pageableResolver.enhance(builder, null, pageable);
 
-		return new Link(UriTemplate.of(builder.build().toString()), relation);
-	}
+        return new Link(UriTemplate.of(builder.build().toString()), relation);
+    }
 
-	private UriTemplate getUriTemplate() {
-		return UriTemplate.of(currentRequest());
-	}
+    private UriTemplate getUriTemplate() {
+        return UriTemplate.of(currentRequest());
+    }
 
-	private static String currentRequest() {
-		return ServletUriComponentsBuilder.fromCurrentRequest().build().toString();
-	}
+    private static String currentRequest() {
+        return ServletUriComponentsBuilder.fromCurrentRequest().build().toString();
+    }
 }

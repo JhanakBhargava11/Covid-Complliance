@@ -12,12 +12,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SubCategoryDataRequest {
 
-	@NotNull
-	private Integer categoryId;
-	@NotEmpty
-	@NotNull
-	private String subCategoryName;
+    @NotNull
+    private Integer categoryId;
+    @NotEmpty
+    @NotNull
+    private String subCategoryName;
 
-	private Boolean isActive;
+    private Boolean isActive;
 
 }

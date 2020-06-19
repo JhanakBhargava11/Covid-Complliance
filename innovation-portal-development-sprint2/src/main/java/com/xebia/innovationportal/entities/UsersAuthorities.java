@@ -18,10 +18,10 @@ import lombok.Setter;
 @Table(name = "users_authorities")
 public class UsersAuthorities {
 
-	@Id
-	@Column(name = "user_id")
-	private Long userId;
-	@Column(name = "authority_id")
-	private Integer authorityId;
+    @Id
+    @Column(name = "user_id")
+    private Long userId;
+    @Column(name = "authority_id")
+    private Integer authorityId;
 
 }

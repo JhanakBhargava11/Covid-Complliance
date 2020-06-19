@@ -16,19 +16,19 @@ import com.microsoft.azure.storage.blob.CloudBlobContainer;
 @Configuration
 public class BeanConfig {
 
-	@Autowired
-	private Environment environment;
+    @Autowired
+    private Environment environment;
 
-	@Bean
-	public CloudBlobClient cloudBlobClient() throws URISyntaxException, StorageException, InvalidKeyException {
-		CloudStorageAccount storageAccount = CloudStorageAccount
-				.parse(environment.getProperty("azure.storage.ConnectionString"));
-		return storageAccount.createCloudBlobClient();
-	}
+    @Bean
+    public CloudBlobClient cloudBlobClient() throws URISyntaxException, StorageException, InvalidKeyException {
+        CloudStorageAccount storageAccount = CloudStorageAccount
+                .parse(environment.getProperty("azure.storage.ConnectionString"));
+        return storageAccount.createCloudBlobClient();
+    }
 
-	@Bean
-	public CloudBlobContainer getBlobContainer() throws URISyntaxException, StorageException, InvalidKeyException {
-		return cloudBlobClient().getContainerReference(environment.getProperty("azure.storage.container.name"));
-	}
+    @Bean
+    public CloudBlobContainer getBlobContainer() throws URISyntaxException, StorageException, InvalidKeyException {
+        return cloudBlobClient().getContainerReference(environment.getProperty("azure.storage.container.name"));
+    }
 
 }

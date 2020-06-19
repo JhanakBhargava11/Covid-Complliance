@@ -7,11 +7,11 @@ import lombok.Getter;
 @Getter
 public class IdeaStatusUpdateRequest {
 
-	@NotNull
-	private Integer ideaId;
-	@NotNull
-	private Integer statusId;
+    @NotNull
+    private Integer ideaId;
+    @NotNull
+    private Integer statusId;
 
-	private String comment;
+    private String comment;
 
 }

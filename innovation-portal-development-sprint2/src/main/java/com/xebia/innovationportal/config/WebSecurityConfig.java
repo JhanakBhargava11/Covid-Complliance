@@ -47,97 +47,97 @@ import com.xebia.innovationportal.services.UserService;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private final UserService userService;
-	private final JWTService jwtService;
+    private final UserService userService;
+    private final JWTService jwtService;
 
-	public WebSecurityConfig(UserService userService, JWTService jwtService) {
-		this.userService = userService;
-		this.jwtService = jwtService;
-	}
+    public WebSecurityConfig(UserService userService, JWTService jwtService) {
+        this.userService = userService;
+        this.jwtService = jwtService;
+    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable()
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable()
 
-				.authorizeRequests().antMatchers(HttpMethod.POST, INNOVATION_PORTAL_API + USER_OTP).permitAll()
-				.antMatchers(HttpMethod.GET, INNOVATION_PORTAL_API + USER_OTP_VERIFY).permitAll()
-				.antMatchers(HttpMethod.GET, INNOVATION_PORTAL_API + USER_AUTH_TOKEN_VERIFY).permitAll()
-				.antMatchers(HttpMethod.GET, INNOVATION_PORTAL_API + USER_URI).permitAll()
-				.antMatchers(HttpMethod.PUT, INNOVATION_PORTAL_API + USER_UPDATE_STATUS_URI).permitAll().anyRequest()
-				.authenticated().and().addFilter(new JWTAuthenticationFilter(authenticationManager()))
-				.addFilter(new JWTAuthorizationFilter(authenticationManager(), userService, jwtService))
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
-				.accessDeniedHandler(accessDeniedHandler()).authenticationEntryPoint(jwtAuthenticationEntryPoint())
-				.and().logout().logoutSuccessHandler(logoutSuccessHandler()).logoutUrl(USER_LOGOUT);
+                .authorizeRequests().antMatchers(HttpMethod.POST, INNOVATION_PORTAL_API + USER_OTP).permitAll()
+                .antMatchers(HttpMethod.GET, INNOVATION_PORTAL_API + USER_OTP_VERIFY).permitAll()
+                .antMatchers(HttpMethod.GET, INNOVATION_PORTAL_API + USER_AUTH_TOKEN_VERIFY).permitAll()
+                .antMatchers(HttpMethod.GET, INNOVATION_PORTAL_API + USER_URI).permitAll()
+                .antMatchers(HttpMethod.PUT, INNOVATION_PORTAL_API + USER_UPDATE_STATUS_URI).permitAll().anyRequest()
+                .authenticated().and().addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), userService, jwtService))
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler()).authenticationEntryPoint(jwtAuthenticationEntryPoint())
+                .and().logout().logoutSuccessHandler(logoutSuccessHandler()).logoutUrl(USER_LOGOUT);
 
-		http.cors().configurationSource(request -> {
-			CorsConfiguration corsConfiguration = new CorsConfiguration();
-			corsConfiguration.applyPermitDefaultValues();
-			corsConfiguration.setAllowedMethods(Arrays.asList(HttpMethod.GET.name(), HttpMethod.HEAD.name(),
-					HttpMethod.POST.name(), HttpMethod.PUT.name()));
-			return corsConfiguration;
-		});
-		http.headers().frameOptions().disable(); // to overcome blank page issue on h2-console login
+        http.cors().configurationSource(request -> {
+            CorsConfiguration corsConfiguration = new CorsConfiguration();
+            corsConfiguration.applyPermitDefaultValues();
+            corsConfiguration.setAllowedMethods(Arrays.asList(HttpMethod.GET.name(), HttpMethod.HEAD.name(),
+                    HttpMethod.POST.name(), HttpMethod.PUT.name()));
+            return corsConfiguration;
+        });
+        http.headers().frameOptions().disable(); // to overcome blank page issue on h2-console login
 
-		http.httpBasic();
-	}
+        http.httpBasic();
+    }
 
-	@Bean
-	public RoleHierarchy roleHierarchy() {
-		RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-		roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_MANAGER > ROLE_USER");
-		return roleHierarchy;
-	}
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_MANAGER > ROLE_USER");
+        return roleHierarchy;
+    }
 
-	private AccessDeniedHandler accessDeniedHandler() {
-		return (request, response, exception) -> {
-			response.setContentType("application/json");
-			response.setStatus(403);
-			String resp = "{\"message\":\"access denied\"}";
-			response.getWriter().write(resp);
-		};
-	}
+    private AccessDeniedHandler accessDeniedHandler() {
+        return (request, response, exception) -> {
+            response.setContentType("application/json");
+            response.setStatus(403);
+            String resp = "{\"message\":\"access denied\"}";
+            response.getWriter().write(resp);
+        };
+    }
 
-	private LogoutSuccessHandler logoutSuccessHandler() {
-		return (request, response, authentication) -> {
-			BaseResponse<Void> resp = new BaseResponse<>(Collections.emptyList());
-			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-			String header = request.getHeader(SecurityConstant.HEADER_AUTH);
-			String token = StringUtils.replace(header, SecurityConstant.TOKEN_PREFIX, StringUtils.EMPTY);
-			try {
-				jwtService.deleteByJti(token);
-				response.setStatus(200);
-				response.getWriter().write(new ObjectMapper().writeValueAsString(resp));
-			} catch (GenericException e) {
-				resp.setCode(e.getCode());
-				resp.setMessage(e.getMessage());
-				try {
-					response.setStatus(400);
-					response.getWriter().write(new ObjectMapper().writeValueAsString(resp));
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				}
-			}
-		};
-	}
+    private LogoutSuccessHandler logoutSuccessHandler() {
+        return (request, response, authentication) -> {
+            BaseResponse<Void> resp = new BaseResponse<>(Collections.emptyList());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            String header = request.getHeader(SecurityConstant.HEADER_AUTH);
+            String token = StringUtils.replace(header, SecurityConstant.TOKEN_PREFIX, StringUtils.EMPTY);
+            try {
+                jwtService.deleteByJti(token);
+                response.setStatus(200);
+                response.getWriter().write(new ObjectMapper().writeValueAsString(resp));
+            } catch (GenericException e) {
+                resp.setCode(e.getCode());
+                resp.setMessage(e.getMessage());
+                try {
+                    response.setStatus(400);
+                    response.getWriter().write(new ObjectMapper().writeValueAsString(resp));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        };
+    }
 
-	private AuthenticationEntryPoint jwtAuthenticationEntryPoint() {
-		return new JwtAuthenticationEntryPoint();
-	}
+    private AuthenticationEntryPoint jwtAuthenticationEntryPoint() {
+        return new JwtAuthenticationEntryPoint();
+    }
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
-	}
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+    }
 
-	@Bean("authenticationManager")
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
+    @Bean("authenticationManager")
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

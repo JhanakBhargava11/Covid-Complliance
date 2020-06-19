@@ -13,35 +13,35 @@ import javax.persistence.Table;
 @Table(name = "ideaLikeDetails")
 public class IdeaLikeDetail {
 
-	@ManyToOne
-	@JoinColumn(name = "IDEA_ID")
-	private Idea idea;
+    @ManyToOne
+    @JoinColumn(name = "IDEA_ID")
+    private Idea idea;
 
-	@OneToOne
-	private User user;
+    @OneToOne
+    private User user;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public Idea getIdea() {
-		return idea;
-	}
+    public Idea getIdea() {
+        return idea;
+    }
 
-	public void setIdea(Idea idea) {
-		this.idea = idea;
-	}
+    public void setIdea(Idea idea) {
+        this.idea = idea;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
 }

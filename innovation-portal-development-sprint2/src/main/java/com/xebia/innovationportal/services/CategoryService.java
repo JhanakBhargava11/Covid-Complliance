@@ -8,16 +8,12 @@ import com.xebia.innovationportal.entities.SubCategoryResponse;
 
 public interface CategoryService {
 
-	List<SubCategoryResponse> getSubCategories();
-	
-
-	public SubCategory saveCategory(SubCategoryResponse response);
-
-	/* List<SubCategory> addSubCategory(List<SubCategory> subCategories); */
+    List<SubCategoryResponse> getSubCategories();
 
 
+    public SubCategory saveCategory(SubCategoryResponse response);
 
+    /* List<SubCategory> addSubCategory(List<SubCategory> subCategories); */
 
-	
 
 }

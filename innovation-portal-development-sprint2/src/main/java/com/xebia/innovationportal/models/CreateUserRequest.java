@@ -79,14 +79,13 @@ public class CreateUserRequest {
         this.timezone = timezone;
     }
 
-	public String getEmployeeCode() {
-		return employeeCode;
-	}
+    public String getEmployeeCode() {
+        return employeeCode;
+    }
 
-	public void setEmployeeCode(String employeeCode) {
-		this.employeeCode = employeeCode;
-	}
-    
-    
-    
+    public void setEmployeeCode(String employeeCode) {
+        this.employeeCode = employeeCode;
+    }
+
+
 }

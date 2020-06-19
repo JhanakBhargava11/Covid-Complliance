@@ -36,116 +36,115 @@ import com.xebia.innovationportal.services.ManagementService;
 @Service
 public class ManagementServiceImpl implements ManagementService {
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Autowired
-	private SubCategoryRepository subCategoryRepository;
+    @Autowired
+    private SubCategoryRepository subCategoryRepository;
 
-	@Autowired
-	private CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-	@Autowired
-	private UserAuthoritiesRepository userAuthoritiesRepository;
+    @Autowired
+    private UserAuthoritiesRepository userAuthoritiesRepository;
 
-	@Transactional(readOnly = true)
-	@Override
-	public Page<UserResponse> getUsers(final UserSearchRequest searchRequest) {
-		return this.userRepository.getUsers(searchRequest);
+    @Transactional(readOnly = true)
+    @Override
+    public Page<UserResponse> getUsers(final UserSearchRequest searchRequest) {
+        return this.userRepository.getUsers(searchRequest);
 
-	}
+    }
 
-	@Transactional
-	@Override
-	public boolean updateUserStatus(final Long id, final boolean status, final Role role,final Integer subCategoryId) {
+    @Transactional
+    @Override
+    public boolean updateUserStatus(final Long id, final boolean status, final Role role, final Integer subCategoryId) {
 
-	User user = userRepository.findById(id)
-	.orElseThrow(() -> new UserNotFoundException(ACTIVE_USER_NOT_FOUND + id));
-	if (role != null && status == true) {
-	Optional<UsersAuthorities> userAuthorities = this.userAuthoritiesRepository.findById(id);
-	if (userAuthorities.isPresent()) {
-	Integer roleId = getRoleId(role);
-	if (roleId != null) {
-	if(role==Role.ROLE_MANAGER ) {
-		
-	SubCategory subCategory=this.subCategoryRepository.findById(subCategoryId).orElseThrow(() -> new GenericException(INVALID_SUB_CATEGORYID));
-	user.setSubCategory(subCategory);
-	}
-	else {
-	user.setSubCategory(null);
-	}
-	userAuthorities.get().setAuthorityId(roleId);
-	} else {
-	throw new InvalidRoleTypeException(INVALID_ROLE_TYPE);
-	}
-	} else {
-	throw new RoleNotFoundException(ROLE_NOT_FOUND + id);
-	}
-	}
-	if (user.isEnabled() != status) {
-	user.updateStatus(status);
-	}
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(ACTIVE_USER_NOT_FOUND + id));
+        if (role != null && status == true) {
+            Optional<UsersAuthorities> userAuthorities = this.userAuthoritiesRepository.findById(id);
+            if (userAuthorities.isPresent()) {
+                Integer roleId = getRoleId(role);
+                if (roleId != null) {
+                    if (role == Role.ROLE_MANAGER) {
 
-	return true;
-	}
+                        SubCategory subCategory = this.subCategoryRepository.findById(subCategoryId).orElseThrow(() -> new GenericException(INVALID_SUB_CATEGORYID));
+                        user.setSubCategory(subCategory);
+                    } else {
+                        user.setSubCategory(null);
+                    }
+                    userAuthorities.get().setAuthorityId(roleId);
+                } else {
+                    throw new InvalidRoleTypeException(INVALID_ROLE_TYPE);
+                }
+            } else {
+                throw new RoleNotFoundException(ROLE_NOT_FOUND + id);
+            }
+        }
+        if (user.isEnabled() != status) {
+            user.updateStatus(status);
+        }
 
-	private Integer getRoleId(final Role role) {
-		Integer roleId = null;
-		switch (role) {
-		case ROLE_ADMIN:
-			roleId = CommonConstants.ROLE_ADMIN_ID;
-			break;
-		case ROLE_MANAGER:
-			roleId = CommonConstants.ROLE_MANAGER_ID;
-			break;
-		case ROLE_USER:
-			roleId = CommonConstants.ROLE_USER_ID;
-			break;
-		default:
-			break;
-		}
-		return roleId;
-	}
+        return true;
+    }
 
-	@Transactional(readOnly = true)
-	@Override
-	public List<SubCategory> getSubCategories() {
-		return subCategoryRepository.findAll();
-	}
+    private Integer getRoleId(final Role role) {
+        Integer roleId = null;
+        switch (role) {
+            case ROLE_ADMIN:
+                roleId = CommonConstants.ROLE_ADMIN_ID;
+                break;
+            case ROLE_MANAGER:
+                roleId = CommonConstants.ROLE_MANAGER_ID;
+                break;
+            case ROLE_USER:
+                roleId = CommonConstants.ROLE_USER_ID;
+                break;
+            default:
+                break;
+        }
+        return roleId;
+    }
 
-	@Override
-	public List<SubCategory> getActiveSubCategories(final boolean isActive) {
-		return subCategoryRepository.findByIsActive(isActive);
-	}
+    @Transactional(readOnly = true)
+    @Override
+    public List<SubCategory> getSubCategories() {
+        return subCategoryRepository.findAll();
+    }
 
-	@Override
-	@Transactional
-	public SubCategory saveCategory(final SubCategoryDataRequest dataRequest) {
-		Category category = this.categoryRepository.findById(dataRequest.getCategoryId())
-				.orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND));
-		SubCategory subCategory = SubCategory.of(null, dataRequest.getSubCategoryName(), category);
-		SubCategory newSubCategory = this.subCategoryRepository.save(subCategory);
-		this.subCategoryRepository.flush();
-		return newSubCategory;
+    @Override
+    public List<SubCategory> getActiveSubCategories(final boolean isActive) {
+        return subCategoryRepository.findByIsActive(isActive);
+    }
 
-	}
+    @Override
+    @Transactional
+    public SubCategory saveCategory(final SubCategoryDataRequest dataRequest) {
+        Category category = this.categoryRepository.findById(dataRequest.getCategoryId())
+                .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND));
+        SubCategory subCategory = SubCategory.of(null, dataRequest.getSubCategoryName(), category);
+        SubCategory newSubCategory = this.subCategoryRepository.save(subCategory);
+        this.subCategoryRepository.flush();
+        return newSubCategory;
 
-	@Override
-	@Transactional
-	public boolean updateCategory(final SubCategoryDataRequest dataRequest, Integer id) throws GenericException {
+    }
 
-		SubCategory existSubCategory = this.subCategoryRepository.findById(id)
-				.orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND));
-		Category category = this.categoryRepository.findById(dataRequest.getCategoryId())
-				.orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND));
-		existSubCategory.setActive(true);
-		existSubCategory.setSubCategoryName(dataRequest.getSubCategoryName());
-		existSubCategory.setCategory(category);
-		existSubCategory.setActive(dataRequest.getIsActive());
-		this.subCategoryRepository.save(existSubCategory);
-		this.subCategoryRepository.flush();
-		return true;
+    @Override
+    @Transactional
+    public boolean updateCategory(final SubCategoryDataRequest dataRequest, Integer id) throws GenericException {
 
-	}
+        SubCategory existSubCategory = this.subCategoryRepository.findById(id)
+                .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND));
+        Category category = this.categoryRepository.findById(dataRequest.getCategoryId())
+                .orElseThrow(() -> new GenericException(HttpStatus.NOT_FOUND));
+        existSubCategory.setActive(true);
+        existSubCategory.setSubCategoryName(dataRequest.getSubCategoryName());
+        existSubCategory.setCategory(category);
+        existSubCategory.setActive(dataRequest.getIsActive());
+        this.subCategoryRepository.save(existSubCategory);
+        this.subCategoryRepository.flush();
+        return true;
+
+    }
 
 }

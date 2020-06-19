@@ -10,7 +10,7 @@ import com.xebia.innovationportal.entities.SubCategory;
 @Repository
 public interface SubCategoryRepository extends JpaRepository<SubCategory, Integer> {
 
-	List<SubCategory> findByIsActive(boolean status);
-	
-	
+    List<SubCategory> findByIsActive(boolean status);
+
+
 }

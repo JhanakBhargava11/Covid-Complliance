@@ -8,5 +8,5 @@ import com.xebia.innovationportal.entities.IdeaStatus;
 @Repository
 public interface IdeaStatusRespository extends JpaRepository<IdeaStatus, Integer> {
 
-	public IdeaStatus findByStatus(String status);
+    public IdeaStatus findByStatus(String status);
 }

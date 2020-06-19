@@ -10,6 +10,6 @@ import com.xebia.innovationportal.entities.User;
 @Repository
 public interface LikeIdeaRepository extends JpaRepository<IdeaLikeDetail, Integer> {
 
-	public IdeaLikeDetail findByIdeaAndUser(Idea idea, User user);
+    public IdeaLikeDetail findByIdeaAndUser(Idea idea, User user);
 
 }

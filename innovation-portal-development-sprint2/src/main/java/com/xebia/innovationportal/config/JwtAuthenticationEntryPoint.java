@@ -17,10 +17,11 @@ import java.io.IOException;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    private static final Logger LOGGER= LoggerFactory.getLogger(JwtAuthenticationEntryPoint.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationEntryPoint.class);
+
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        LOGGER.info("*******Inside error:{}************",authException.getMessage());
+        LOGGER.info("*******Inside error:{}************", authException.getMessage());
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write(new ObjectMapper().writeValueAsString(new BaseResponse<>(HttpStatus.FORBIDDEN)));

@@ -42,33 +42,33 @@ import com.xebia.innovationportal.repositories.UserRepository;
 @SpringBootTest
 public class ManagementServiceImplTest {
 
-	@InjectMocks
-	private ManagementServiceImpl managementService;
+    @InjectMocks
+    private ManagementServiceImpl managementService;
 
-	@Mock
-	private UserRepository userRepository;
+    @Mock
+    private UserRepository userRepository;
 
-	@Mock
-	private SubCategoryRepository subCategoryRepository;
+    @Mock
+    private SubCategoryRepository subCategoryRepository;
 
-	@Mock
-	private CategoryRepository categoryRepository;
+    @Mock
+    private CategoryRepository categoryRepository;
 
-	@Rule
-	private ExpectedException expectedExceptionRule = ExpectedException.none();
+    @Rule
+    private ExpectedException expectedExceptionRule = ExpectedException.none();
 
-	@Before
-	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
-	}
+    @Before
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+    }
 
-	@Test
-	public void testUpdateUserStatusThrowUserNotFoundException() {
-		expectedExceptionRule.expect(UserNotFoundException.class);
-		when(userRepository.findById((long) 1)).thenReturn(Optional.empty());
-		managementService.updateUserStatus((long) 1, true, Role.ROLE_USER,1);
+    @Test
+    public void testUpdateUserStatusThrowUserNotFoundException() {
+        expectedExceptionRule.expect(UserNotFoundException.class);
+        when(userRepository.findById((long) 1)).thenReturn(Optional.empty());
+        managementService.updateUserStatus((long) 1, true, Role.ROLE_USER, 1);
 
-	}
+    }
 
 //	@Test
 //	public void testUpdateUserStatus() {
@@ -90,13 +90,13 @@ public class ManagementServiceImplTest {
 //
 //	}
 
-	@Test
-	public void testGetActiveSubCategories() {
-		List<SubCategory> subCategories = Arrays
-				.asList(SubCategory.of(1, "manager", new Category("category name", "description")));
-		when(subCategoryRepository.findByIsActive(true)).thenReturn(subCategories);
-		assertEquals(managementService.getActiveSubCategories(true), subCategories);
-	}
+    @Test
+    public void testGetActiveSubCategories() {
+        List<SubCategory> subCategories = Arrays
+                .asList(SubCategory.of(1, "manager", new Category("category name", "description")));
+        when(subCategoryRepository.findByIsActive(true)).thenReturn(subCategories);
+        assertEquals(managementService.getActiveSubCategories(true), subCategories);
+    }
 
 //	@Test
 //	public void testGetActiveSubCategoriesAll() {
@@ -106,77 +106,77 @@ public class ManagementServiceImplTest {
 //		assertEquals(managementService.getActiveSubCategories(false), subCategories);
 //	}
 
-	@Test
-	public void testGetSubCategories() {
-		List<SubCategory> subCategories = Arrays
-				.asList(SubCategory.of(1, "manager", new Category("category name", "description")));
-		when(subCategoryRepository.findAll()).thenReturn(subCategories);
-		assertEquals(managementService.getSubCategories(), subCategories);
+    @Test
+    public void testGetSubCategories() {
+        List<SubCategory> subCategories = Arrays
+                .asList(SubCategory.of(1, "manager", new Category("category name", "description")));
+        when(subCategoryRepository.findAll()).thenReturn(subCategories);
+        assertEquals(managementService.getSubCategories(), subCategories);
 
-	}
+    }
 
-	@Test
-	public void testGetUsers() {
-		PageRequest page = PageRequest.of(1, 12);
-		UserSearchRequest searchRequest = UserSearchRequest.of("Vishal", "vishal@xebia.com", Role.ROLE_USER, page);
+    @Test
+    public void testGetUsers() {
+        PageRequest page = PageRequest.of(1, 12);
+        UserSearchRequest searchRequest = UserSearchRequest.of("Vishal", "vishal@xebia.com", Role.ROLE_USER, page);
 
-		User user = new User();
-		user.setName("Vishal");
-		user.setDisplayName("Vishal yadav");
-		user.setEnabled(true);
-		Set<Authority> authorities = new HashSet<>();
-		Authority auth = new Authority();
-		auth.setRole(Role.ROLE_USER);
-		authorities.add(auth);
-		user.setAuthorities(authorities);
-		List<UserResponse> responses = Arrays.asList(UserResponse.of(user));
+        User user = new User();
+        user.setName("Vishal");
+        user.setDisplayName("Vishal yadav");
+        user.setEnabled(true);
+        Set<Authority> authorities = new HashSet<>();
+        Authority auth = new Authority();
+        auth.setRole(Role.ROLE_USER);
+        authorities.add(auth);
+        user.setAuthorities(authorities);
+        List<UserResponse> responses = Arrays.asList(UserResponse.of(user));
 
-		PageImpl<UserResponse> pageImpl = new PageImpl<UserResponse>(responses, page, 1);
-		when(userRepository.getUsers(searchRequest)).thenReturn(pageImpl);
-		assertEquals(managementService.getUsers(searchRequest), pageImpl);
+        PageImpl<UserResponse> pageImpl = new PageImpl<UserResponse>(responses, page, 1);
+        when(userRepository.getUsers(searchRequest)).thenReturn(pageImpl);
+        assertEquals(managementService.getUsers(searchRequest), pageImpl);
 
-	}
+    }
 
-	@Test
-	public void testSaveCategorythrowsGenericException() {
-		expectedExceptionRule.expect(GenericException.class);
-		SubCategoryDataRequest request = new SubCategoryDataRequest();
-		request.setCategoryId(1);
-		request.setSubCategoryName("manager");
-		when(this.categoryRepository.findById(request.getCategoryId())).thenReturn(Optional.empty());
-		managementService.saveCategory(request);
+    @Test
+    public void testSaveCategorythrowsGenericException() {
+        expectedExceptionRule.expect(GenericException.class);
+        SubCategoryDataRequest request = new SubCategoryDataRequest();
+        request.setCategoryId(1);
+        request.setSubCategoryName("manager");
+        when(this.categoryRepository.findById(request.getCategoryId())).thenReturn(Optional.empty());
+        managementService.saveCategory(request);
 
-	}
+    }
 
-	@Test
-	public void testSaveCategory() {
-		SubCategoryDataRequest request = new SubCategoryDataRequest();
-		request.setCategoryId(1);
-		request.setSubCategoryName("manager");
-		Category category = new Category();
-		category.setCategoryDescription("des");
-		category.setCategoryName("category name");
+    @Test
+    public void testSaveCategory() {
+        SubCategoryDataRequest request = new SubCategoryDataRequest();
+        request.setCategoryId(1);
+        request.setSubCategoryName("manager");
+        Category category = new Category();
+        category.setCategoryDescription("des");
+        category.setCategoryName("category name");
 
-		when(this.categoryRepository.findById(request.getCategoryId())).thenReturn(Optional.of(category));
-		managementService.saveCategory(request);
-		verify(subCategoryRepository).flush();
+        when(this.categoryRepository.findById(request.getCategoryId())).thenReturn(Optional.of(category));
+        managementService.saveCategory(request);
+        verify(subCategoryRepository).flush();
 
-	}
+    }
 
-	@Test
-	public void testUpdateCategory() {
-		expectedExceptionRule.expect(GenericException.class);
+    @Test
+    public void testUpdateCategory() {
+        expectedExceptionRule.expect(GenericException.class);
 
-		SubCategoryDataRequest request = new SubCategoryDataRequest();
-		request.setCategoryId(1);
-		request.setSubCategoryName("manager");
-		Category category = new Category();
-		category.setCategoryDescription("des");
-		category.setCategoryName("category name");
+        SubCategoryDataRequest request = new SubCategoryDataRequest();
+        request.setCategoryId(1);
+        request.setSubCategoryName("manager");
+        Category category = new Category();
+        category.setCategoryDescription("des");
+        category.setCategoryName("category name");
 
-		when(this.subCategoryRepository.findById(request.getCategoryId())).thenReturn(Optional.empty());
+        when(this.subCategoryRepository.findById(request.getCategoryId())).thenReturn(Optional.empty());
 
-		managementService.updateCategory(request, 12);
+        managementService.updateCategory(request, 12);
 
-	}
+    }
 }

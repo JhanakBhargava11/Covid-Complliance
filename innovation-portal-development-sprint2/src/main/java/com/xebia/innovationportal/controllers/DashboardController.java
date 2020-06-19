@@ -29,33 +29,33 @@ import com.xebia.innovationportal.utils.ImmutableCollectors;
 @RestController
 @RequestMapping(value = INNOVATION_PORTAL_API, produces = MediaType.APPLICATION_JSON_VALUE)
 public class DashboardController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(IdeaController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IdeaController.class);
 
-	@Autowired
-	private DashboardService dashboardService;
+    @Autowired
+    private DashboardService dashboardService;
 
-	@GetMapping(TOP_CONTRIBUTOR)
-	public ResponseEntity<List<TopContributorResponse>> getTopContributor() {
-		LOGGER.info("*************** Top Contributor method inside *********");
-		List<TopContributorResponse> topContributor = dashboardService.getTopContributor();
-		return ResponseEntity.status(HttpStatus.OK).body(topContributor);
-	}
+    @GetMapping(TOP_CONTRIBUTOR)
+    public ResponseEntity<List<TopContributorResponse>> getTopContributor() {
+        LOGGER.info("*************** Top Contributor method inside *********");
+        List<TopContributorResponse> topContributor = dashboardService.getTopContributor();
+        return ResponseEntity.status(HttpStatus.OK).body(topContributor);
+    }
 
-	@GetMapping(TRENDING)
-	public ResponseEntity<List<TopTrendingIdeasResponse>> getTopTrendingIdeas() {
-		LOGGER.info("*************** Top Trending idea inside *********");
+    @GetMapping(TRENDING)
+    public ResponseEntity<List<TopTrendingIdeasResponse>> getTopTrendingIdeas() {
+        LOGGER.info("*************** Top Trending idea inside *********");
 
-		List<TopTrendingIdeasResponse> topTrendingIdeas = this.dashboardService.getTrendingIdeas().stream()
-				.map(TopTrendingIdeasResponse::of).collect(ImmutableCollectors.toImmutableList());
-		return ResponseEntity.status(HttpStatus.OK).body(topTrendingIdeas);
+        List<TopTrendingIdeasResponse> topTrendingIdeas = this.dashboardService.getTrendingIdeas().stream()
+                .map(TopTrendingIdeasResponse::of).collect(ImmutableCollectors.toImmutableList());
+        return ResponseEntity.status(HttpStatus.OK).body(topTrendingIdeas);
 
-	}
+    }
 
-	@GetMapping(IDEA_STATS)
-	public ResponseEntity<BaseResponse<HashSet<IdeaStatsResponse>>> getIdeaStats(
-			@RequestParam(defaultValue = "all") String duration) {
+    @GetMapping(IDEA_STATS)
+    public ResponseEntity<BaseResponse<HashSet<IdeaStatsResponse>>> getIdeaStats(
+            @RequestParam(defaultValue = "all") String duration) {
 
-		return new ResponseEntity<BaseResponse<HashSet<IdeaStatsResponse>>>(
-				new BaseResponse<>(dashboardService.getAllIdeaStats(duration)), HttpStatus.OK);
-	}
+        return new ResponseEntity<BaseResponse<HashSet<IdeaStatsResponse>>>(
+                new BaseResponse<>(dashboardService.getAllIdeaStats(duration)), HttpStatus.OK);
+    }
 }

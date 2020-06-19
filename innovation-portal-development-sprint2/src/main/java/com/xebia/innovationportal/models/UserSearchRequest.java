@@ -13,25 +13,25 @@ import lombok.ToString;
 @ToString
 public class UserSearchRequest {
 
-	private String name;
+    private String name;
 
-	@Email
-	private String email;
+    @Email
+    private String email;
 
-	private Pageable pageable;
-	
-	private Role role;
+    private Pageable pageable;
 
-	private UserSearchRequest(String name, String email,Role role, Pageable pageable) {
-		this.name = name;
-		this.email = email;
-		this.role=role;
-		this.pageable = pageable;
-	}
+    private Role role;
 
-	public static UserSearchRequest of(String name, String email,Role role, Pageable pageable) {
-		return new UserSearchRequest(name, email,role,pageable);
+    private UserSearchRequest(String name, String email, Role role, Pageable pageable) {
+        this.name = name;
+        this.email = email;
+        this.role = role;
+        this.pageable = pageable;
+    }
 
-	}
+    public static UserSearchRequest of(String name, String email, Role role, Pageable pageable) {
+        return new UserSearchRequest(name, email, role, pageable);
+
+    }
 
 }

@@ -26,228 +26,228 @@ import lombok.Setter;
 @Table(name = "users")
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(nullable = false)
-	private String email;
+    @Column(nullable = false)
+    private String email;
 
-	@Column(name = "enabled")
-	private boolean isEnabled;
+    @Column(name = "enabled")
+    private boolean isEnabled;
 
-	@Column(nullable = false)
-	private String name;
+    @Column(nullable = false)
+    private String name;
 
-	private String displayName;
+    private String displayName;
 
-	private String location;
+    private String location;
 
-	private String timezone;
+    private String timezone;
 
-	private String password;
+    private String password;
 
-	@CreatedDate
-	private LocalDateTime creationDate;
+    @CreatedDate
+    private LocalDateTime creationDate;
 
-	@Column(nullable = false)
-	private String employeeCode;
+    @Column(nullable = false)
+    private String employeeCode;
 
-	private String designation;
+    private String designation;
 
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "subcategory_id")
-	private SubCategory subCategory;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "subcategory_id")
+    private SubCategory subCategory;
 
-	public User() {
-	}
+    public User() {
+    }
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "authority_id") })
-	private Set<Authority> authorities;
-	@OneToMany(mappedBy = "user")
-	private List<Idea> idea;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {
+            @JoinColumn(name = "authority_id")})
+    private Set<Authority> authorities;
+    @OneToMany(mappedBy = "user")
+    private List<Idea> idea;
 
-	private User(Builder builder) {
-		email = builder.email;
-		isEnabled = builder.isEnabled;
-		name = builder.name;
-		displayName = builder.displayName;
-		location = builder.location;
-		timezone = builder.timezone;
-		password = builder.password;
-		creationDate = builder.creationDate;
-		employeeCode = builder.employeeCode;
-		designation = builder.designation;
-		authorities = builder.authorities;
-		subCategory = builder.subCategory;
-	}
+    private User(Builder builder) {
+        email = builder.email;
+        isEnabled = builder.isEnabled;
+        name = builder.name;
+        displayName = builder.displayName;
+        location = builder.location;
+        timezone = builder.timezone;
+        password = builder.password;
+        creationDate = builder.creationDate;
+        employeeCode = builder.employeeCode;
+        designation = builder.designation;
+        authorities = builder.authorities;
+        subCategory = builder.subCategory;
+    }
 
-	public void updateStatus(boolean isEnabled) {
-		this.isEnabled = isEnabled;
-	}
+    public void updateStatus(boolean isEnabled) {
+        this.isEnabled = isEnabled;
+    }
 
-	public void updateTimeZone(final String timezone) {
-		this.timezone = timezone;
-	}
+    public void updateTimeZone(final String timezone) {
+        this.timezone = timezone;
+    }
 
-	public void updateCreationDate() {
-		this.creationDate = LocalDateTime.now();
-	}
+    public void updateCreationDate() {
+        this.creationDate = LocalDateTime.now();
+    }
 
-	public void updateAuthorities(Set<Authority> authorities) {
-		this.authorities = authorities;
-	}
+    public void updateAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
 
-	public void updateSubCategory(SubCategory subCategory) {
-		this.subCategory = subCategory;
-	}
+    public void updateSubCategory(SubCategory subCategory) {
+        this.subCategory = subCategory;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public SubCategory getSubCategory() {
-		return subCategory;
-	}
+    public SubCategory getSubCategory() {
+        return subCategory;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public boolean isEnabled() {
-		return isEnabled;
-	}
+    public boolean isEnabled() {
+        return isEnabled;
+    }
 
-	public void updateEnabled(final boolean enabled) {
-		this.isEnabled = enabled;
-	}
+    public void updateEnabled(final boolean enabled) {
+        this.isEnabled = enabled;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getDisplayName() {
-		return displayName;
-	}
+    public String getDisplayName() {
+        return displayName;
+    }
 
-	public String getLocation() {
-		return location;
-	}
+    public String getLocation() {
+        return location;
+    }
 
-	public String getTimezone() {
-		return timezone;
-	}
+    public String getTimezone() {
+        return timezone;
+    }
 
-	public LocalDateTime getCreationDate() {
-		return creationDate;
-	}
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
 
-	public String getEmployeeCode() {
-		return employeeCode;
-	}
+    public String getEmployeeCode() {
+        return employeeCode;
+    }
 
-	public String getDesignation() {
-		return designation;
-	}
+    public String getDesignation() {
+        return designation;
+    }
 
-	public Set<Authority> getAuthorities() {
-		return authorities;
-	}
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public static class Builder {
+    public static class Builder {
 
-		private String email;
-		private boolean isEnabled;
-		private String name;
-		private String displayName;
-		private String location;
-		private String timezone;
-		private String password;
-		private LocalDateTime creationDate;
-		private String employeeCode;
-		private String designation;
-		private Set<Authority> authorities;
-		private SubCategory subCategory;
+        private String email;
+        private boolean isEnabled;
+        private String name;
+        private String displayName;
+        private String location;
+        private String timezone;
+        private String password;
+        private LocalDateTime creationDate;
+        private String employeeCode;
+        private String designation;
+        private Set<Authority> authorities;
+        private SubCategory subCategory;
 
-		public Builder(final SubCategory subCategory) {
-			this.subCategory = subCategory;
-		}
+        public Builder(final SubCategory subCategory) {
+            this.subCategory = subCategory;
+        }
 
-		public Builder(final String email) {
-			this.email = email;
-		}
+        public Builder(final String email) {
+            this.email = email;
+        }
 
-		public Builder enabled(final boolean isEnabled) {
-			this.isEnabled = isEnabled;
-			return this;
-		}
+        public Builder enabled(final boolean isEnabled) {
+            this.isEnabled = isEnabled;
+            return this;
+        }
 
-		public Builder name(final String name) {
-			this.name = name;
-			return this;
-		}
+        public Builder name(final String name) {
+            this.name = name;
+            return this;
+        }
 
-		public void updateEnabled(final boolean enabled) {
-			this.isEnabled = enabled;
-		}
+        public void updateEnabled(final boolean enabled) {
+            this.isEnabled = enabled;
+        }
 
-		public Builder displayName(final String displayName) {
-			this.displayName = displayName;
-			return this;
-		}
+        public Builder displayName(final String displayName) {
+            this.displayName = displayName;
+            return this;
+        }
 
-		public Builder location(final String location) {
-			this.location = location;
-			return this;
-		}
+        public Builder location(final String location) {
+            this.location = location;
+            return this;
+        }
 
-		public Builder timezone(final String timezone) {
-			this.timezone = timezone;
-			return this;
-		}
+        public Builder timezone(final String timezone) {
+            this.timezone = timezone;
+            return this;
+        }
 
-		public Builder password(final String password) {
-			this.password = password;
-			return this;
-		}
+        public Builder password(final String password) {
+            this.password = password;
+            return this;
+        }
 
-		public Builder creationDate(final LocalDateTime creationDate) {
-			this.creationDate = creationDate;
-			return this;
-		}
+        public Builder creationDate(final LocalDateTime creationDate) {
+            this.creationDate = creationDate;
+            return this;
+        }
 
-		public Builder employeeCode(final String employeeCode) {
-			this.employeeCode = employeeCode;
-			return this;
-		}
+        public Builder employeeCode(final String employeeCode) {
+            this.employeeCode = employeeCode;
+            return this;
+        }
 
-		public Builder designation(final String designation) {
-			this.designation = designation;
-			return this;
-		}
+        public Builder designation(final String designation) {
+            this.designation = designation;
+            return this;
+        }
 
-		public Builder authorities(final Set<Authority> authorities) {
-			this.authorities = authorities;
-			return this;
-		}
+        public Builder authorities(final Set<Authority> authorities) {
+            this.authorities = authorities;
+            return this;
+        }
 
-		public User build() {
-			return new User(this);
-		}
-	}
+        public User build() {
+            return new User(this);
+        }
+    }
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", isEnabled=" + isEnabled + ", name=" + name + ", displayName="
-				+ displayName + ", location=" + location + ", timezone=" + timezone + ", password=" + password
-				+ ", creationDate=" + creationDate + ", employeeCode=" + employeeCode + ", designation=" + designation
-				+ ", authorities=" + authorities + "]";
-	}
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", email=" + email + ", isEnabled=" + isEnabled + ", name=" + name + ", displayName="
+                + displayName + ", location=" + location + ", timezone=" + timezone + ", password=" + password
+                + ", creationDate=" + creationDate + ", employeeCode=" + employeeCode + ", designation=" + designation
+                + ", authorities=" + authorities + "]";
+    }
 
 }

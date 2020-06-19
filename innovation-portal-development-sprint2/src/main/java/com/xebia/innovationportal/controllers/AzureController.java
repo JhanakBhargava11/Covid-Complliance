@@ -36,63 +36,63 @@ import com.xebia.innovationportal.constants.CommonConstants;
 @RequestMapping(value = INNOVATION_PORTAL_API)
 public class AzureController {
 
-	@Autowired
-	private AzureBlobAdapter azureBlobAdapter;
+    @Autowired
+    private AzureBlobAdapter azureBlobAdapter;
 
-	@PostMapping(IDEAS_UPLOAD)
-	public ResponseEntity<?> upload(@RequestParam MultipartFile file) {
-		String url = "";
-		String[] response = new String[2];
-		Long userId = getUser().getId();
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		String dirPath = CommonConstants.DIRECTORY_LOCATION + "/" + userId;
-		File uploadPath = 	Paths.get(CommonConstants.DIRECTORY_LOCATION + "/" + userId + "/" ).toAbsolutePath().toFile();
-		if (uploadPath.exists() == false) {
-			uploadPath.mkdirs();
-		}
-		String fileName = file.getOriginalFilename().substring(0, file.getOriginalFilename().lastIndexOf("."));
-		String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-		String fileNameWithTimeStamp = fileName + "_" + timestamp.getTime() + extension;
-		File uploadFile = new File(uploadPath.getAbsolutePath(), fileNameWithTimeStamp);
-		uploadFile(file, uploadFile);
-		if (uploadFile.exists()) {
-			url = azureBlobAdapter.upload(dirPath, fileNameWithTimeStamp);
-			try {
-				FileUtils.cleanDirectory(uploadPath);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		response[0] = fileNameWithTimeStamp;
-		response[1] = url;
-		return ResponseEntity.ok(response);
-	}
+    @PostMapping(IDEAS_UPLOAD)
+    public ResponseEntity<?> upload(@RequestParam MultipartFile file) {
+        String url = "";
+        String[] response = new String[2];
+        Long userId = getUser().getId();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String dirPath = CommonConstants.DIRECTORY_LOCATION + "/" + userId;
+        File uploadPath = Paths.get(CommonConstants.DIRECTORY_LOCATION + "/" + userId + "/").toAbsolutePath().toFile();
+        if (uploadPath.exists() == false) {
+            uploadPath.mkdirs();
+        }
+        String fileName = file.getOriginalFilename().substring(0, file.getOriginalFilename().lastIndexOf("."));
+        String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+        String fileNameWithTimeStamp = fileName + "_" + timestamp.getTime() + extension;
+        File uploadFile = new File(uploadPath.getAbsolutePath(), fileNameWithTimeStamp);
+        uploadFile(file, uploadFile);
+        if (uploadFile.exists()) {
+            url = azureBlobAdapter.upload(dirPath, fileNameWithTimeStamp);
+            try {
+                FileUtils.cleanDirectory(uploadPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        response[0] = fileNameWithTimeStamp;
+        response[1] = url;
+        return ResponseEntity.ok(response);
+    }
 
-	@GetMapping(IDEAS_DOWNLOAD)
-	public ResponseEntity<?> download(@RequestParam("fileName") String fileName) {
-		Long userId = getUser().getId();
-		boolean isTrue = azureBlobAdapter.getFileFromAzyur(fileName, userId);
-		if (isTrue) {
-			Path path = Paths.get(CommonConstants.DIRECTORY_LOCATION + "/" + userId + "/" + fileName).toAbsolutePath();
-			UrlResource resource = null;
-			try {
-				resource = new UrlResource(path.toUri());
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
-			return ResponseEntity.ok().contentType(MediaType.parseMediaType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
-					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-					.body(resource);
-		}
-		return ResponseEntity.noContent().build();
-	}
+    @GetMapping(IDEAS_DOWNLOAD)
+    public ResponseEntity<?> download(@RequestParam("fileName") String fileName) {
+        Long userId = getUser().getId();
+        boolean isTrue = azureBlobAdapter.getFileFromAzyur(fileName, userId);
+        if (isTrue) {
+            Path path = Paths.get(CommonConstants.DIRECTORY_LOCATION + "/" + userId + "/" + fileName).toAbsolutePath();
+            UrlResource resource = null;
+            try {
+                resource = new UrlResource(path.toUri());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            return ResponseEntity.ok().contentType(MediaType.parseMediaType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
+        }
+        return ResponseEntity.noContent().build();
+    }
 
-	private void uploadFile(MultipartFile file, File updatedFile) {
-		try (InputStream in = file.getInputStream(); OutputStream out = new FileOutputStream(updatedFile)) {
-			FileCopyUtils.copy(in, out);
-		} catch (IOException ex) {
-			throw new RuntimeException(ex);
-		}
+    private void uploadFile(MultipartFile file, File updatedFile) {
+        try (InputStream in = file.getInputStream(); OutputStream out = new FileOutputStream(updatedFile)) {
+            FileCopyUtils.copy(in, out);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
 
-	}
+    }
 }

@@ -10,5 +10,5 @@ import com.xebia.innovationportal.entities.IdeaStatusHistory;
 @Repository
 public interface IdeaStatusHistoryRepository extends JpaRepository<IdeaStatusHistory, Integer> {
 
-	public IdeaStatusHistory findByIdeaAndIdeaStatus(Idea Idea, IdeaStatus ideaStatus);
+    public IdeaStatusHistory findByIdeaAndIdeaStatus(Idea Idea, IdeaStatus ideaStatus);
 }

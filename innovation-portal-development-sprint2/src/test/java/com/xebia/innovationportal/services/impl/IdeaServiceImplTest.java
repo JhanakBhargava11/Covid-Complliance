@@ -32,66 +32,66 @@ import com.xebia.innovationportal.repositories.UserRepository;
 @SpringBootTest
 public class IdeaServiceImplTest {
 
-	@Mock
-	private IdeaRepository ideaRepository;
+    @Mock
+    private IdeaRepository ideaRepository;
 
-	@InjectMocks
-	private IdeaServiceImpl ideaService;
+    @InjectMocks
+    private IdeaServiceImpl ideaService;
 
-	@Mock
-	private CategoryRepository categoryRepository;
+    @Mock
+    private CategoryRepository categoryRepository;
 
-	@Mock
-	private SubCategoryRepository subCategoryRepository;
+    @Mock
+    private SubCategoryRepository subCategoryRepository;
 
-	@Mock
-	private IdeaStatusRespository ideaStatusRespository;
+    @Mock
+    private IdeaStatusRespository ideaStatusRespository;
 
-	@Mock
-	private IdeaStatusHistoryRepository ideaStatusHistoryRepository;
+    @Mock
+    private IdeaStatusHistoryRepository ideaStatusHistoryRepository;
 
-	@Mock
-	private UserRepository userRepository;
+    @Mock
+    private UserRepository userRepository;
 
-	@Before
-	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
-	}
+    @Before
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+    }
 
-	@Rule
-	private ExpectedException expectedExceptionRule = ExpectedException.none();
+    @Rule
+    private ExpectedException expectedExceptionRule = ExpectedException.none();
 
-	/*
-	 * @Test public void testSaveIdea() {
-	 * 
-	 * IdeaDataRequest request=new IdeaDataRequest();
-	 * request.setAzureUrl("www.azure.com"); request.setCategoryId(12);
-	 * request.setFileName("resume"); request.setId(1);
-	 * request.setIdeaDescription("file upload"); request.setIdeaStatusId(13);
-	 * request.setSubCategoryId(134); request.setTitle("resume");
-	 * 
-	 * ideaService.saveIdea(request);
-	 * 
-	 * }
-	 */
+    /*
+     * @Test public void testSaveIdea() {
+     *
+     * IdeaDataRequest request=new IdeaDataRequest();
+     * request.setAzureUrl("www.azure.com"); request.setCategoryId(12);
+     * request.setFileName("resume"); request.setId(1);
+     * request.setIdeaDescription("file upload"); request.setIdeaStatusId(13);
+     * request.setSubCategoryId(134); request.setTitle("resume");
+     *
+     * ideaService.saveIdea(request);
+     *
+     * }
+     */
 
-	@Test
-	public void testfindAllIdeaByStatus() {
+    @Test
+    public void testfindAllIdeaByStatus() {
 
-		Idea idea = new Idea();
-		idea.setIdeaDescription("idea description");
-		idea.setTitle("idea");
-		List<Idea> ideas = Arrays.asList(idea);
+        Idea idea = new Idea();
+        idea.setIdeaDescription("idea description");
+        idea.setTitle("idea");
+        List<Idea> ideas = Arrays.asList(idea);
 
-		IdeaStatus ideaStatus = new IdeaStatus();
-		ideaStatus.setStatus("true");
-		ideaStatus.setStatusDescription("good idea");
+        IdeaStatus ideaStatus = new IdeaStatus();
+        ideaStatus.setStatus("true");
+        ideaStatus.setStatusDescription("good idea");
 
-		when(ideaStatusRespository.findByStatus("true")).thenReturn(ideaStatus);
-		when(ideaRepository.findByIdeaStatusOrderBySubmissionDateDesc(ideaStatus)).thenReturn(ideas);
-		ideaService.findAllIdeaByStatus("true");
+        when(ideaStatusRespository.findByStatus("true")).thenReturn(ideaStatus);
+        when(ideaRepository.findByIdeaStatusOrderBySubmissionDateDesc(ideaStatus)).thenReturn(ideas);
+        ideaService.findAllIdeaByStatus("true");
 
-	}
+    }
 
 //	@Test
 //	public void testGetIdeaByUserId() {
@@ -131,13 +131,13 @@ public class IdeaServiceImplTest {
 //		
 //	}
 
-	@Test
-	public void testfindIdeaById() {
+    @Test
+    public void testfindIdeaById() {
 
-		expectedExceptionRule.expect(GenericException.class);
-		when(userRepository.findById(1l)).thenReturn(Optional.empty());
-		ideaService.findIdeaById(12);
+        expectedExceptionRule.expect(GenericException.class);
+        when(userRepository.findById(1l)).thenReturn(Optional.empty());
+        ideaService.findIdeaById(12);
 
-	}
+    }
 
 }
