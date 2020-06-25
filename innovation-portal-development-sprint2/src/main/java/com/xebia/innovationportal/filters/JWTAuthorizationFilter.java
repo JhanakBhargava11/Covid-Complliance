@@ -31,7 +31,7 @@ import com.xebia.innovationportal.services.JWTService;
 import com.xebia.innovationportal.services.UserService;
 
 @Component
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+public class  JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JWTAuthorizationFilter.class);
     private final UserService userService;
