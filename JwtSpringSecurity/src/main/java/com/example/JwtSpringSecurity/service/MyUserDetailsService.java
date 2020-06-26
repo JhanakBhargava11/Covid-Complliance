@@ -17,8 +17,13 @@ public class MyUserDetailsService implements UserDetailsService {
     UserRepository repository;
 
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        Optional<User> user=repository.findByUsername(userName);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user=repository.findByUsername(username);
+        System.out.println("user = "+user.map(MyUserDetails::new).get());
         return user.map(MyUserDetails::new).get();
     }
+
+//    public void verifyUsername(String username) {
+//        Optional<User> user=repository.findByUsername(username);
+//    }
 }
