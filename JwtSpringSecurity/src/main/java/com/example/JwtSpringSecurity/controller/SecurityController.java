@@ -1,5 +1,6 @@
 package com.example.JwtSpringSecurity.controller;
 
+import com.example.JwtSpringSecurity.entity.Payload;
 import com.example.JwtSpringSecurity.entity.UserResponse;
 import com.example.JwtSpringSecurity.models.*;
 import com.example.JwtSpringSecurity.service.EmailService;
@@ -59,12 +60,12 @@ public class SecurityController {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username.getUsername());
             tempUsername.setUsername(username.getUsername());
             userResponse.setMessage("user verified and mail send");
-            userResponse.setStatus(HttpStatus.OK);
+            userResponse.setStatus("success");
             return ResponseEntity.status(HttpStatus.OK).body(userResponse);
         }
         catch(NoSuchElementException e){
             userResponse.setMessage("invalid user");
-            userResponse.setStatus(HttpStatus.FORBIDDEN);
+            userResponse.setStatus("failure");
 //            throw new Exception("Incorrect username",e);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(userResponse);
         }
@@ -81,13 +82,12 @@ public class SecurityController {
                     .loadUserByUsername(tempUsername.getUsername());
 
             final String jwt = jwtTokenUtil.generateToken(userDetails);
-            userResponse.setStatus(HttpStatus.OK);
+            userResponse.setStatus("success");
             userResponse.setMessage("Otp verified");
-            List<String> jwtList = Arrays.asList(jwt);
-            userResponse.setPayload(jwtList);
+            userResponse.setPayload(new Payload(jwt));
             return ResponseEntity.status(HttpStatus.OK).body(userResponse);
         }catch (BadCredentialsException e){
-            userResponse.setStatus(HttpStatus.BAD_REQUEST);
+            userResponse.setStatus("failure");
             userResponse.setMessage("Invalid OTP");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userResponse);
         }
