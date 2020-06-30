@@ -52,7 +52,7 @@ public class SecurityController {
     }
 
     @PostMapping("/username")
-    public ResponseEntity<UserResponse> verifyUsername(@RequestBody Username username) throws Exception{
+    public ResponseEntity<UserResponse> verifyUsername(@RequestBody Username username ) throws Exception{
         UserResponse userResponse=new UserResponse();
         try{
             userDetailsService.loadUserByUsername(username.getUsername());
