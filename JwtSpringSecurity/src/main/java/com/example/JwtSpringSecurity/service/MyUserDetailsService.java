@@ -22,7 +22,4 @@ public class MyUserDetailsService implements UserDetailsService {
         return user.map(MyUserDetails::new).get();
     }
 
-//    public void verifyUsername(String username) {
-//        Optional<User> user=repository.findByUsername(username);
-//    }
 }

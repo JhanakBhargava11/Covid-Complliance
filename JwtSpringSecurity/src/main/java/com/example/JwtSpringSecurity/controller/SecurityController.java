@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
@@ -48,12 +49,13 @@ public class SecurityController {
     @PostMapping("/username")
     public ResponseEntity<?> verifyUsername(@RequestBody Username username) throws Exception{
         try{
+            userDetailsService.loadUserByUsername(username.getUsername());
             emailService.sendEmail(username.getUsername());
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username.getUsername());
         }
         catch(NoSuchElementException e){
             throw new Exception("Incorrect username",e);
         }
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username.getUsername());
         tempUsername.setUsername(username.getUsername());
         return ResponseEntity.ok("username Verified");
     }
@@ -74,10 +76,4 @@ public class SecurityController {
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
-    @PostMapping("/password_")
-    public void verify_Password(){
-        System.out.println(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                "Mudassir","password"
-        )));
-    }
 }

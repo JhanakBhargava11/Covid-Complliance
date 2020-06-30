@@ -14,8 +14,6 @@ public class User {
     private String password;
     private boolean active;
     private String roles;
-//    private Date startDate;
-//    private Date expirationDate;
 
     public boolean isActive() {
         return active;
@@ -57,19 +55,4 @@ public class User {
         this.password = password;
     }
 
-//    public Date getStartDate() {
-//        return startDate;
-//    }
-//
-//    public void setStartDate(Date startDate) {
-//        this.startDate = startDate;
-//    }
-//
-//    public Date getExpirationDate() {
-//        return expirationDate;
-//    }
-//
-//    public void setExpirationDate(Date expirationDate) {
-//        this.expirationDate = expirationDate;
-//    }
 }
