@@ -1,4 +1,4 @@
-package com.example.JwtSpringSecurity.models;
+package com.example.JwtSpringSecurity.service;
 
 import org.springframework.stereotype.Service;
 

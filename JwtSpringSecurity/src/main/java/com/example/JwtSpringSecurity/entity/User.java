@@ -3,6 +3,7 @@ package com.example.JwtSpringSecurity.entity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Date;
 
 @Entity
 @Table(name="users")
@@ -13,6 +14,8 @@ public class User {
     private String password;
     private boolean active;
     private String roles;
+//    private Date startDate;
+//    private Date expirationDate;
 
     public boolean isActive() {
         return active;
@@ -53,4 +56,20 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+//    public Date getStartDate() {
+//        return startDate;
+//    }
+//
+//    public void setStartDate(Date startDate) {
+//        this.startDate = startDate;
+//    }
+//
+//    public Date getExpirationDate() {
+//        return expirationDate;
+//    }
+//
+//    public void setExpirationDate(Date expirationDate) {
+//        this.expirationDate = expirationDate;
+//    }
 }
