@@ -19,8 +19,8 @@ public class EmailSend {
     public static void sendMailUsingTLS(SimpleMailMessage email) {
 //        String host = "outlook.office365.com";
         String host = "smtp.gmail.com";
-        String username = "";
-        String password = "";
+        String username = "testxebianew@gmail.com";
+        String password = "qwerty12@";
         Properties properties = new Properties();
         properties.put("mail.smtp.host", host);
         properties.put("mail.smtp.auth", "true");

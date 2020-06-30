@@ -19,6 +19,7 @@ public class EmailService {
         int otp = getRandomNumberUsingNextInt();
         user.get().setPassword(String.valueOf(otp));
         userRepository.save(user.get());
+        System.out.println(otp);
         EmailSend.setEmail(user.get().getUsername(),"OTP send",otp+" This is your new otp for covid compliance");
     }
 
